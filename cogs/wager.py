@@ -10,22 +10,20 @@ from discord.ext import commands
 class TestSelection(discord.ui.View):
     def __init__(self):
         super().__init__(timeout=45)
-        self.options_list = [1, 2, 3]
 
-    @discord.ui.select(placeholder="Choose a Flavor!", min_values=1, max_values=1)
-    async def select_callback(self, select: discord.ui.Select):
-        # Generate the options list dynamically
-        options = [discord.SelectOption(label=str(option), description=f"Option {option}") for option in self.options_list]
+    options_list = []
 
-        # Set the options for the select menu
-        select.options = options
+    @discord.ui.select(placeholder = "Select a Move", min_values = 1, max_values = 1, 
+                       
+                       options = [discord.SelectOption(label=str(option), description=f"Move {option}") for option in options_list]
 
-        # Wait for the user to make a selection
-        await select.prompt.send()
+                       )
+    
 
-        # Send a message with the selected value
-        await select.response.send_message(f"You selected {select.values[0]}")
 
+    async def select_callback(self, interaction:discord.Interaction, select):
+        self.options_list.append(4)
+        return await interaction.response.send_message(f"{select.values[0]}, list: ")
 
 
 
@@ -37,8 +35,10 @@ class Wager(commands.Cog):
         self.bot = bot
     @app_commands.command(name="test", description="testing")
     async def test(self, interaction: discord.Interaction):
-        await interaction.response.send_message('Hi!', view=TestSelection)
+        await interaction.response.send_message('Hi!', view=TestSelection())
 
-    
+#build chess board using ascii
+
+#check for win using engine.py
        
 
