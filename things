@@ -1,0 +1,50 @@
+Moderation:
+- Ban
+- Kick
+- Timeout
+- Warn
+- Lockdown
+- Check amount of infractions on user (combine with a general user command)
+
+
+- Welcome/Leave Messages
+
+
+- [ask] ChatGPT Intergration
+- [math] ChatGPT Intergration
+
+- Message Streaks
+
+
+- Command List
+
+
+- Blackjack
+
+
+
+
+things to do for a game (in general)
+
+
+start with a slash command and bring up buttons
+use buttons to interact
+have other functions to call that handle the game state
+edit the message based on game state (functions)
+add a "end" button to exit out of the game loop
+add a repeat button that resets the board for another game
+include a currency-based system that deducts/increases coin amounts basied on outcome
+
+(probably include all of this in one cog, if large enough consider speading out specific commands into diffrent files)
+
+basicilly a big game loop that uses buttons to interact/end, and a slash command to start
+
+
+first couple of games: 
+
+tictactoe (maybe using the minimax algorithm)
+blackjack (maybe implementing a algorithm of it's own)
+
+
+chess, evenutally (using a dropdown with all possible moves) - use game id's and playing with bots (stockfish)
+
