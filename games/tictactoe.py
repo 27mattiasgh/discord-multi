@@ -1,7 +1,7 @@
 import json
 import random
 import discord
-from cogs.engine import Engine
+from games.engine import Engine
 from discord import app_commands
 from discord.ext import commands
 

@@ -3,7 +3,7 @@ from discord import app_commands
 from discord.ext import commands
 
 class ConfirmationButtons(discord.ui.View):
-    def __init__(self, ):
+    def __init__(self):
         super().__init__(timeout=45)
 
         self.embed_pages = 0
@@ -17,9 +17,9 @@ class ConfirmationButtons(discord.ui.View):
             ["Page 5 Title", "Page 5 Value"],
             ["Page 6 Title", "Page 6 Value"],
             ["Page 7 Title", "Page 7 Value"],
-
-
         ]
+
+
         self.max = len(self.embed_values) + 1
         self.min = 0
 
@@ -41,7 +41,6 @@ class ConfirmationButtons(discord.ui.View):
         self.left_home.disabled = True
         self.right_button.disabled = False
         self.right_home.disabled = False
-
         embedVar = discord.Embed(color=0x009a00)
         embedVar.add_field(name=self.embed_first_name, value=self.embed_first_value)
         await interaction.response.edit_message(embed=embedVar, view=self)
@@ -75,9 +74,7 @@ class ConfirmationButtons(discord.ui.View):
             embedVar = discord.Embed(color=0x009a00)
 
             x = self.embed_values[self.embed_pages - 1] 
-            print(x)
             embedVar.add_field(name=x[0], value=x[1])
-            print(x[0], x[1])
 
         await interaction.response.edit_message(embed=embedVar, view=self)
 
@@ -116,9 +113,7 @@ class ConfirmationButtons(discord.ui.View):
 
 
             x = self.embed_values[self.embed_pages - 1] 
-            print(x)
             embedVar.add_field(name=x[0], value=x[1])
-            print(x[0], x[1])
 
         await interaction.response.edit_message(embed=embedVar, view=self)
 
@@ -128,7 +123,6 @@ class ConfirmationButtons(discord.ui.View):
         if self.embed_pages != self.max:
             self.embed_pages == self.max
         
-
         self.left_button.disabled = False
         self.left_home.disabled = False
         self.right_button.disabled = True
@@ -136,7 +130,7 @@ class ConfirmationButtons(discord.ui.View):
 
         embedVar = discord.Embed(color=0x009a00)
         embedVar.add_field(name=self.embed_last_name, value=self.embed_last_value)
-        await interaction.response.edit_message(embed=embedVar, view=self)
+        await interaction.response.edit_message(embed=embedVar)
         
 
         
@@ -164,7 +158,6 @@ class Help(commands.Cog):
         self.bot = bot
     @app_commands.command(name="help", description="view a command list")
     async def help(self, interaction: discord.Interaction):
-        await interaction.response.send_message('Hi!', view=ConfirmationButtons())
+        await interaction.response.send_message('Hi!', view=ConfirmationButtons(), ephemeral=True)
 
-       
 
