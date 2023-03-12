@@ -1,4 +1,3 @@
-import json
 import discord
 from discord.ext import commands
 
@@ -6,6 +5,9 @@ from cogs.wager import Wager
 from cogs.moderation import Moderation
 from cogs.config import Config
 from cogs.tictactoe import Tictactoe
+from cogs.help import Help
+
+
 
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix='!', intents=intents)
@@ -18,6 +20,7 @@ async def sync(ctx: commands.Context):
         await bot.add_cog(Wager(bot))
         await bot.add_cog(Moderation(bot))
         await bot.add_cog(Config(bot))
+        await bot.add_cog(Help(bot))
 
         await bot.add_cog(Tictactoe(bot))   
 

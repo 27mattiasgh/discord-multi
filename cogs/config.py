@@ -30,7 +30,7 @@ class Config(commands.Cog):
     @app_commands.checks.has_permissions(ban_members=True)
     @app_commands.command(name="config", description="administator permissions required")
     async def config(self, interaction: discord.Interaction):
-        embedVar = discord.Embed(color=0x009a00)
+
         await interaction.response.send_message('`press buttons below to edit config files`', view=Buttons(), ephemeral=True)
 
 
