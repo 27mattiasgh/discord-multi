@@ -106,7 +106,7 @@ class TicTacToeButtons(discord.ui.View):
                 self.square_one.style = discord.ButtonStyle.green
                 self.square_one.label = self.own_piece_char
                 self.board[1] = self.own_piece
-                self.board = [x * -1 for x in self.board]
+                custom_board = [x * -1 for x in self.board]
                 result = Engine(custom_board)
             if self.own_piece == -1: 
                 result = 0

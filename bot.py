@@ -2,14 +2,14 @@ import discord
 import sys
 from discord.ext import commands
 
-from games.wager import Wager
+from economy.slots import Wager
+from economy.balance import Balance
+
 from games.tictactoe import Tictactoe
 
 from settings.moderation import Moderation
 from settings.config import Config
 from settings.help import Help
-
-
 
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix='!', intents=intents)
@@ -22,11 +22,15 @@ async def sync(ctx: commands.Context):
         try:
             await bot.add_cog(Wager(bot))
             await bot.add_cog(Moderation(bot))
+
             await bot.add_cog(Config(bot))
             await bot.add_cog(Help(bot))
-            await bot.add_cog(Tictactoe(bot))   
-        except:
-            return await ctx.send('`cogs already loaded`')
+
+            await bot.add_cog(Tictactoe(bot))  
+            await bot.add_cog(Balance(bot))
+
+        except Exception as e:
+            return await ctx.send(f'`cogs already loaded  {e}`')
 
         await message.edit(content='`attempting to sync`')
 

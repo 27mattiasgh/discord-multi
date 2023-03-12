@@ -21,8 +21,6 @@ class TestSelection(discord.ui.View):
 
                        )
     
-
-
     async def select_callback(self, interaction:discord.Interaction, select):
         self.options_list.append(4)
         return await interaction.response.send_message(f"{select.values[0]}, list: ")
