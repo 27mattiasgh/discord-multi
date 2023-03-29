@@ -11,7 +11,7 @@ from discord.utils import get
 from discord.ext import commands
 
 
-class Verification(commands.Cog, group_name='verification'):
+class Verification(commands.GroupCog, group_name='verification'):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
@@ -76,7 +76,7 @@ class Verification(commands.Cog, group_name='verification'):
             await message.delete()
             
     @app_commands.checks.has_permissions(kick_members=True)
-    @app_commands.command(name="channel", description="Sets the verification channel. Requires kick permissions.")
+    @app_commands.command(name="set_channel", description="Sets the verification channel. Requires kick permissions.")
     async def set_verification_channel(self, interaction: discord.Interaction, channel:discord.TextChannel):
 
         with open(r'C:\Users\Mati\OneDrive\Desktop\Discord Slash Commands\moderation\verification.json', 'r') as f:
@@ -86,7 +86,7 @@ class Verification(commands.Cog, group_name='verification'):
         with open(r'C:\Users\Mati\OneDrive\Desktop\Discord Slash Commands\moderation\verification.json', 'w') as f:
             json.dump(data, f)
 
-        embedVar = discord.Embed(color=0xEAAA00, title=f"Verification Channel Set!",description=f"Verification channel set to <#{channel.id}>.")
+        embedVar = discord.Embed(color=0x89CFF0, title=f"Verification Channel Set!",description=f"Verification channel set to <#{channel.id}>.")
         embedVar.set_footer(text=f'{interaction.user.display_name}#{interaction.user.discriminator}')
 
         return await interaction.response.send_message(embed=embedVar, ephemeral=True)
@@ -100,13 +100,13 @@ class Verification(commands.Cog, group_name='verification'):
         with open(r'C:\Users\Mati\OneDrive\Desktop\Discord Slash Commands\moderation\verification.json', 'w') as f:
             json.dump(data, f)
 
-        embedVar = discord.Embed(color=0xEAAA00, title=f"Verification Channel Set!",description=f"Verification log channel set to <#{channel.id}>.")
+        embedVar = discord.Embed(color=0x89CFF0, title=f"Verification Channel Set!",description=f"Verification log channel set to <#{channel.id}>.")
         embedVar.set_footer(text=f'{interaction.user.display_name}#{interaction.user.discriminator}')
 
         return await interaction.response.send_message(embed=embedVar, ephemeral=True)
     
     @app_commands.checks.has_permissions(kick_members=True)
-    @app_commands.command(name="role", description="Sets the verification role. Requires kick permissions.")
+    @app_commands.command(name="set_role", description="Sets the verification role. Requires kick permissions.")
     async def set_verification_role(self, interaction: discord.Interaction, role:discord.Role):
 
         with open(r'C:\Users\Mati\OneDrive\Desktop\Discord Slash Commands\moderation\verification.json', 'r') as f:
@@ -116,7 +116,7 @@ class Verification(commands.Cog, group_name='verification'):
         with open(r'C:\Users\Mati\OneDrive\Desktop\Discord Slash Commands\moderation\verification.json', 'w') as f:
             json.dump(data, f)
 
-        embedVar = discord.Embed(color=0xEAAA00, title=f"Verification Role Set!",description=f"Verification role set to <@&{role.id}>.")
+        embedVar = discord.Embed(color=0x89CFF0, title=f"Verification Role Set!",description=f"Verification role set to <@&{role.id}>.")
         embedVar.set_footer(text=f'{interaction.user.display_name}#{interaction.user.discriminator}')
 
         return await interaction.response.send_message(embed=embedVar, ephemeral=True)
