@@ -72,11 +72,11 @@ class Moderation(commands.Cog):
     async def warn(self, interaction: discord.Interaction, member:discord.User, reason:str):
         user = interaction.user
 
-        with open(r'C:\Users\Mati\OneDrive\Desktop\Discord Slash Commands\json data\infractions.json') as f:
+        with open(r'moderation\moderation.json') as f:
             data = json.load(f)
         data[str(member.id)] += 1
         total_infractions = data[str(member.id)]
-        with open(r'C:\Users\Mati\OneDrive\Desktop\Discord Slash Commands\json data\infractions.json', 'w') as f:
+        with open(r'moderation\moderation.json', 'w') as f:
             json.dump(data, f)
 
         dm = await member.create_dm()
@@ -92,7 +92,7 @@ class Moderation(commands.Cog):
     @app_commands.command(name="kick", description="kick a user")
     async def kick(self, interaction: discord.Interaction, member:discord.User, reason:str):
         user = interaction.user
-        with open(r'C:\Users\Mati\OneDrive\Desktop\Discord Slash Commands\json data\infractions.json') as f:
+        with open(r'moderation\moderation.json') as f:
             data = json.load(f)
         total_infractions = data[str(member.id)]
         if total_infractions == 0:
@@ -116,7 +116,7 @@ class Moderation(commands.Cog):
     @app_commands.command(name="ban", description="ban a user")
     async def ban(self, interaction: discord.Interaction, member:discord.User, reason:str):
         user = interaction.user
-        with open(r'C:\Users\Mati\OneDrive\Desktop\Discord Slash Commands\json data\infractions.json') as f:
+        with open(r'moderation\moderation.json') as f:
             data = json.load(f)
         total_infractions = data[str(member.id)]
         if total_infractions == 0:

@@ -17,38 +17,43 @@ class Buttons(discord.ui.View):
         infraction_counts = {}
         for member in guild.members:
             infraction_counts[member.id] = 0
-        with open('infractions.json', 'w') as f:
+        with open(r'C:\Users\Mati\OneDrive\Desktop\Discord Slash Commands\moderation\moderation.json', 'w') as f:
             json.dump(infraction_counts, f)
             
-        await interaction.response.edit_message(content='`infractions.json reset`')
+        await interaction.response.edit_message(content='`resources\infractions.json reset`')
 
 
     @discord.ui.button(label="Reset Economy", style=discord.ButtonStyle.red)
     async def reset_economy(self, interaction: discord.Interaction, button: discord.ui.Button):
         guild = interaction.guild
 
-        default_balance = 1000
+        default_total_balance = 1000
+        default_bank_balance = 1000
+        default_wallet_balance = 0
         default_job = None
-        default_win_rate = 100.0
+
+
 
         for member in guild.members:
 
             user_data = {}
-            user_data['balance'] = default_balance
+            user_data['total_balance'] = default_total_balance
+            user_data['bank_balance'] = default_bank_balance
+            user_data['wallet_balance'] = default_wallet_balance
             user_data['job'] = default_job
-            user_data['win_rate'] = default_win_rate
 
 
-            with open('resources\economy.json', 'r') as f:
+
+            with open(r'C:\Users\Mati\OneDrive\Desktop\Discord Slash Commands\economy\economy.json', 'r') as f:
                 data = json.load(f)
 
             users = data['users']
             users[str(member.id)] = user_data
 
-            with open('resources\economy.json', 'w') as f:
+            with open(r'C:\Users\Mati\OneDrive\Desktop\Discord Slash Commands\economy\economy.json', 'w') as f:
                 json.dump({'users': users}, f)
 
-        await interaction.response.edit_message(content='`resources\economy.json reset`')
+        await interaction.response.edit_message(content='`economy\economy.json reset`')
 
 
 
