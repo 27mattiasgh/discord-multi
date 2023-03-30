@@ -69,7 +69,9 @@ class Moderation(commands.Cog):
 
     @app_commands.checks.has_permissions(kick_members=True)
     @app_commands.command(name="warn", description="warn a user")
-    async def warn(self, interaction: discord.Interaction, member:discord.User, reason:str):
+    async def warn(self, interaction: discord.Interaction, member:discord.User, reason:str = None):
+        reason = 'None' if reason is None else reason
+
         user = interaction.user
 
         with open(r'moderation\moderation.json') as f:
@@ -90,22 +92,27 @@ class Moderation(commands.Cog):
 
     @app_commands.checks.has_permissions(kick_members=True)
     @app_commands.command(name="kick", description="kick a user")
-    async def kick(self, interaction: discord.Interaction, member:discord.User, reason:str):
+    async def kick(self, interaction: discord.Interaction, member:discord.User, reason:str = None):
+        reason = 'None' if reason is None else reason
+
         user = interaction.user
         with open(r'moderation\moderation.json') as f:
             data = json.load(f)
         total_infractions = data[str(member.id)]
         if total_infractions == 0:
             action = 'kick'
-            embedVar = discord.Embed(color=0x009a00)
-            embedVar.set_author(name=f'This user has no active infractions. Are you sure you want to perform this opperation?')  
+            embedVar = discord.Embed(color=0x009a00, description=f'<@{member.id}> has no active infractions. Are you sure you want to perform this opperation?')
+
             return await interaction.response.send_message(embed=embedVar, view=ConfirmationButtons(member, user, total_infractions, reason, action), ephemeral=True)
 
         dm = await member.create_dm()
+
         embedMember = discord.Embed(color=0x009a00)
         embedMember.set_author(name=f'You have been kicked in {interaction.guild}. Reason: {reason}.')
         await dm.send(embed=embedMember, view=MoreInfoButtons(member, user, total_infractions))
+        
         await member.kick()
+
         embedUser = discord.Embed(color=0x009a00)
         embedUser.set_author(name=f'{member.display_name} has been kicked.')
         await interaction.response.send_message(embed=embedUser, ephemeral=True) 
@@ -114,24 +121,25 @@ class Moderation(commands.Cog):
 
     @app_commands.checks.has_permissions(ban_members=True)
     @app_commands.command(name="ban", description="ban a user")
-    async def ban(self, interaction: discord.Interaction, member:discord.User, reason:str):
+    async def ban(self, interaction: discord.Interaction, member:discord.User, reason:str = None):
+        reason = 'None' if reason is None else reason
+
         user = interaction.user
         with open(r'moderation\moderation.json') as f:
             data = json.load(f)
         total_infractions = data[str(member.id)]
         if total_infractions == 0:
             action = 'ban'
-            embedVar = discord.Embed(color=0x009a00)
-            embedVar.set_author(name=f'This user has no active infractions. Are you sure you want to perform this opperation?')  
+            embedVar = discord.Embed(color=0x009a00, description=f'<@{member.id}> has no active infractions. Are you sure you want to perform this opperation?')  
             return await interaction.response.send_message(embed=embedVar, view=ConfirmationButtons(member, user, total_infractions, reason, action), ephemeral=True)
 
         dm = await member.create_dm()
-        embedMember = discord.Embed(color=0x009a00)
-        embedMember.set_author(name=f'You have been banned in {interaction.guild}. Reason: {reason}.')
+        embedMember = discord.Embed(color=0x009a00, description=f'You have been banned in {interaction.guild}. Reason: {reason}')
+
         await dm.send(embed=embedMember, view=MoreInfoButtons(member, user, total_infractions))
         await member.ban()
         embedUser = discord.Embed(color=0x009a00)
-        embedUser.set_author(name=f'{member.display_name} has been banned.')
+        embedVar = discord.Embed(color=0x009a00, description=f'<@{member.id}> has been banned.')
         await interaction.response.send_message(embed=embedUser, ephemeral=True) 
 
 

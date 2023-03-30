@@ -6,10 +6,9 @@ from discord import app_commands
 from discord.ext import commands
 
 
-class Balance(commands.Cog):
+class Economy(commands.GroupCog, group_name='eco'):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
-
         self.emoji = [":gem:", ":first_place:", ":100:", ":dollar:", ":moneybag:", ":bell:"]
 
     def get_balance(self, user):
@@ -56,37 +55,26 @@ class Balance(commands.Cog):
         return bank_balance, total_balance, wallet_balance
 
 
-    @app_commands.command(name="balance", description="view your balance")
+    @app_commands.command(name="balance", description="View your balance.")
     async def balance(self, interaction: discord.Interaction, user:discord.User=None):
         if user is None:
             user = interaction.user
             
-        bank_balance, total_balance, wallet_balance = Balance.get_balance(self, user)
+        bank_balance, total_balance, wallet_balance = Economy.get_balance(self, user)
         embedVar = discord.Embed(color=0xEAAA00, title=f"{user.display_name}#{user.discriminator}'s Balance:",description=f"""Wallet Balance: 💸`{wallet_balance}`\n Bank Balance: 💸`{bank_balance}`\n Total Balance:   💸`{total_balance}` """)
         embedVar.set_footer(text=f'{interaction.user.display_name}#{interaction.user.discriminator}', icon_url=interaction.user.display_avatar.url)
         return await interaction.response.send_message(embed=embedVar, ephemeral=True)
-
-    @app_commands.command(name="add_balance", description="add to your balance")
-    async def add_balance(self, interaction: discord.Interaction, amount:int):
-
-        
-        user = interaction.user
-           
-        bank_balance, total_balance, wallet_balance = Balance.configure_balance(self, user, amount)
-        embedVar = discord.Embed(color=0xEAAA00, title=f"{user.display_name}#{user.discriminator}'s Updated Balance:",description=f"""Wallet Balance: 💸`{wallet_balance}`\n Bank Balance: 💸`{bank_balance}`\n Total Balance:   💸`{total_balance}` """)
-        embedVar.set_footer(text=f'{interaction.user.display_name}#{interaction.user.discriminator}', icon_url=interaction.user.display_avatar.url)
-        return await interaction.response.send_message(embed=embedVar, ephemeral=True)
-        
-    @app_commands.command(name="bank", description="transfer money to your bank")
+   
+    @app_commands.command(name="bank", description="Transfer coins from your wallet to the bank.")
     async def bank(self, interaction: discord.Interaction):
         user = interaction.user
 
-        bank_balance, total_balance, wallet_balance = Balance.configure_bank(self, user)
+        bank_balance, total_balance, wallet_balance = Economy.configure_bank(self, user)
         embedVar = discord.Embed(color=0xEAAA00, title=f"{user.display_name}#{user.discriminator}'s Updated Balance:",description=f"""Wallet Balance: 💸`{wallet_balance}`\n Bank Balance: 💸`{bank_balance}`\n Total Balance:   💸`{total_balance}` """)
         embedVar.set_footer(text=f'{interaction.user.display_name}#{interaction.user.discriminator}', icon_url=interaction.user.display_avatar.url)
         return await interaction.response.send_message(embed=embedVar, ephemeral=True)
         
-    @app_commands.command(name="slots", description="play a slot game")
+    @app_commands.command(name="slots", description="Gamble your coins off with slot commands.")
     async def slots(self, interaction: discord.Interaction):
         one, two, three = random.choice(self.emoji), random.choice(self.emoji), random.choice(self.emoji)
 
@@ -109,29 +97,29 @@ class Balance(commands.Cog):
         embedVar = discord.Embed(color=0xEAAA00)
         if one == two == three:
             profit = random.randint(100, 250)
-            Balance.configure_balance(self, interaction.user, profit)
+            Economy.configure_balance(self, interaction.user, profit)
             embedVar.add_field(name="Jackpot!", value=f"{one}|{two}|{three}")
-            embedVar.add_field(name="New Balance:", value=f"💸`{Balance.get_balance(self, interaction.user)[1]} (+{profit})`", inline=False)
+            embedVar.add_field(name="New Balance:", value=f"💸`{Economy.get_balance(self, interaction.user)[1]} (+{profit})`", inline=False)
             return await interaction.edit_original_response(embed=embedVar)
 
         elif one == two or one == three or two == three:
             profit = random.randint(20, 37)
-            Balance.configure_balance(self, interaction.user, profit)
+            Economy.configure_balance(self, interaction.user, profit)
             embedVar.add_field(name="Close!", value=f"{one}|{two}|{three}")
-            embedVar.add_field(name="New Balance:", value=f"💸`{Balance.get_balance(self, interaction.user)[1]} (+{profit})`", inline=False)
+            embedVar.add_field(name="New Balance:", value=f"💸`{Economy.get_balance(self, interaction.user)[1]} (+{profit})`", inline=False)
             return await interaction.edit_original_response(embed=embedVar)
 
         else:
             profit = random.randint(-10, 5)
             sign = '+' if profit > 0 else ''
-            Balance.configure_balance(self, interaction.user, profit)
+            Economy.configure_balance(self, interaction.user, profit)
             embedVar.add_field(name="Nice Try!", value=f"{one}|{two}|{three}")
-            embedVar.add_field(name="New Balance:", value=f"💸`{Balance.get_balance(self, interaction.user)[1]} ({sign}{profit})`", inline=False)
+            embedVar.add_field(name="New Balance:", value=f"💸`{Economy.get_balance(self, interaction.user)[1]} ({sign}{profit})`", inline=False)
             return await interaction.edit_original_response(embed=embedVar)
 
     @app_commands.command(name="rob", description="rob someone")
     async def rob(self, interaction: discord.Interaction, user:discord.User):
-        wallet_balance = Balance.get_balance(self, user)[2] 
+        wallet_balance = Economy.get_balance(self, user)[2] 
         amount = wallet_balance / random.randint(2, 4)
 
         print(wallet_balance)
@@ -140,10 +128,10 @@ class Balance(commands.Cog):
 
 
 
-            Balance.configure_balance(self, interaction.user, amount)
-            Balance.configure_balance(self, user, -amount)
+            Economy.configure_balance(self, interaction.user, amount)
+            Economy.configure_balance(self, user, -amount)
             embedVar = discord.Embed(color=0xEAAA00)
-            embedVar.add_field(name=f"{user.display_name}#{user.discriminator} Has Been Robbed!", value=f"New Wallet Balance: 💸`{Balance.get_balance(self, interaction.user)[1]} (+{amount})`")
+            embedVar.add_field(name=f"{user.display_name}#{user.discriminator} Has Been Robbed!", value=f"New Wallet Balance: 💸`{Economy.get_balance(self, interaction.user)[1]} (+{amount})`")
             embedVar.set_footer(text=f'{interaction.user.display_name}#{interaction.user.discriminator}', icon_url=interaction.user.display_avatar.url)
             return await interaction.response.send_message(embed=embedVar, ephemeral=True)
 
@@ -151,9 +139,9 @@ class Balance(commands.Cog):
         else: #  bad
             amount = random.randint(100, 250)
 
-            Balance.configure_balance(self, interaction.user, -amount)
+            Economy.configure_balance(self, interaction.user, -amount)
             embedVar = discord.Embed(color=0xCE2029)
-            embedVar.add_field(name=f"🚔🚨 You've Been Caught!", value=f"New Wallet Balance: 💸`{Balance.get_balance(self, interaction.user)[1]} (-{amount})`")
+            embedVar.add_field(name=f"🚔🚨 You've Been Caught!", value=f"New Wallet Balance: 💸`{Economy.get_balance(self, interaction.user)[1]} (-{amount})`")
             embedVar.set_footer(text=f'{interaction.user.display_name}#{interaction.user.discriminator}', icon_url=interaction.user.display_avatar.url)
             return await interaction.response.send_message(embed=embedVar, ephemeral=True)  
 
