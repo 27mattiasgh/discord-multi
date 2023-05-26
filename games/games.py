@@ -1,4 +1,3 @@
-import json
 import random
 import discord
 from games.engine import Engine
@@ -633,44 +632,21 @@ class TicTacToeButtons(discord.ui.View):
             return await interaction.response.edit_message(content='Game Over!', view=self)
         await interaction.response.edit_message(content='Your Move!', view=self)
 
-
- 
- 
-class TestSelection(discord.ui.View):
-    def __init__(self):
-        super().__init__(timeout=45)
-    @discord.ui.select(placeholder = "Choose a Flavor!", min_values = 1, max_values = 2,
-        options = [
-         
-            discord.SelectOption(label="Vanilla", description="Pick this if you like vanilla!"),
-
-        ]
-    )
-
-    async def select_callback(self, interaction:discord.Interaction, select):
-        if select.values[0] == "Chocolate":
-            return await interaction.response.send_message(f"F you. No one likes {select.values[0]}!")
-        if len(select.values) > 1:
-            return await interaction.response.send_message(f"Awesome! I like {select.values[0]} and {select.values[1]} too!")
-        return await interaction.response.send_message(f"Awesome! I like {select.values[0]} too!")
-
-
-
-
-class Tictactoe(commands.Cog):
+class Games(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
-    @app_commands.command(name="tictactoe", description="play tic-tac-toe against the computer")
-    async def tictactoe(self, interaction: discord.Interaction):
-        
-        piece = random.randint(1,2)
+        print(f'Class {self.__class__.__name__} loaded.')
 
+    @app_commands.command(name="tictactoe", description="Play tic-tac-toe against the computer.")
+    async def tictactoe(self, interaction: discord.Interaction):
+        piece = random.randint(1, 2)
         board = [0, 0, 0, 
                  0, 0, 0, 
                  0, 0, 0]
 
         if piece == 2:
             piece = -1
-            return await interaction.response.send_message('The computer goes first - Click any button to start!', view=TicTacToeButtons(piece, -piece, board),ephemeral=True)
-        
+            return await interaction.response.send_message('The computer moves first - Click any button to start!', view=TicTacToeButtons(piece, -piece, board),ephemeral=True)
         return await interaction.response.send_message('Your Move!', view=TicTacToeButtons(piece, -piece, board),ephemeral=True)
+
+

@@ -1,0 +1,5 @@
+- Fix ranking in profile 
+
+- Fix verification role adding type
+
+- ROLE CREATOR STILL GIVES PERMS FOR PRIVATE CHANNELS

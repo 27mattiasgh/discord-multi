@@ -19,7 +19,7 @@ class PageinatorButtons(discord.ui.View):
              "`/ban`", "Bans a user. Requires ban permissions.",
              "`/warn`", "Warns a user. Requires kick permissions."],
 
-            ["Page 4 Title", "Page 4 Value"],
+            ["`/ticket create`", "Create a new poll. Should only be run by moderators."],
         ]
 
 
@@ -190,14 +190,16 @@ class ConfigButtons(discord.ui.View):
 class Help(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
+        print(f'Class {self.__class__.__name__} loaded.')
     @app_commands.command(name="help", description="View the command list, and navigate though using pageination.")
     async def help(self, interaction: discord.Interaction):
-        embedVar = discord.Embed(color=0x89CFF0, title='How to use Pageinator', description="""When you first see the page, it displays the first page of information. You can navigate to the next page by clicking on the `>` button or to the previous page by clicking on the `<` button. The `|>` button will take you to the last page, and the `|<` button will take you back to the first page.\n\nThe number in the middle of the buttons indicates the current page number, and it is not clickable. If you try to go beyond the first or last page, the corresponding buttons will become disabled, and you won't be able to click on them.""")
+        embedVar = discord.Embed(color=0x89CFF0, title='How to use Pageinator', description="""When you first see the page, it displays the first page of information. You can navigate to the next page by clicking on the `>` button or to the previous page by clicking on the `<` button. The `>|` button will take you to the last page, and the `|<` button will take you back to the first page.\n\nThe number in the middle of the buttons indicates the current page number, and it is not clickable. If you try to go beyond the first or last page, the corresponding buttons will become disabled, and you won't be able to click on them.""")
         await interaction.response.send_message(embed=embedVar, view=PageinatorButtons(), ephemeral=True)
 
 class Config(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
+        print(f'Class {self.__class__.__name__} loaded.')
     @app_commands.checks.has_permissions(ban_members=True)
     @app_commands.command(name="config", description="administator permissions required")
     async def config(self, interaction: discord.Interaction):
